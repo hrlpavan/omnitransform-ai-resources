@@ -113,7 +113,7 @@ def build_exact_sih_deck(output_path="SIH2026_Idea_Presentation_PS26154.pptx"):
         ("• Theme - ", "Miscellaneous / AI"),
         ("• PS Category - ", "Software"),
         ("• Team ID - ", "104580"),
-        ("• Team Name - ", "OmniTransform"),
+        ("• Team Name - ", "HRL"),
         ("• Project Resources - ", DEDICATED_REPO_URL)
     ]
 

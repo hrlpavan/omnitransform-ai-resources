@@ -5,7 +5,7 @@
 > **Organization**: National Technical Research Organisation (NTRO)  
 > **Theme**: Artificial Intelligence / Blockchain & Cybersecurity  
 > **Category**: Software  
-> **Team Name**: OmniTransform  
+> **Team Name**: HRL  
 
 ---
 
