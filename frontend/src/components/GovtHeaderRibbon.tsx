@@ -12,7 +12,7 @@ export const GovtHeaderRibbon: React.FC = () => {
             <img
               src="./gov_moe_logo_transparent.png"
               alt="Ministry of Education - Government of India"
-              className="h-5 sm:h-5.5 max-h-6 w-auto object-contain block"
+              className="h-5 sm:h-6 max-h-6 w-auto object-contain block"
             />
           </div>
 
@@ -23,7 +23,7 @@ export const GovtHeaderRibbon: React.FC = () => {
             <img
               src="./gov_aicte_logo_transparent.png"
               alt="All India Council for Technical Education (AICTE)"
-              className="h-5 sm:h-5.5 max-h-6 w-auto object-contain block"
+              className="h-5 sm:h-6 max-h-6 w-auto object-contain block"
             />
           </div>
 
@@ -34,7 +34,7 @@ export const GovtHeaderRibbon: React.FC = () => {
             <img
               src="./gov_mic_logo_transparent.png"
               alt="MoE's Innovation Cell (MIC)"
-              className="h-5 sm:h-5.5 max-h-6 w-auto object-contain block"
+              className="h-5 sm:h-6 max-h-6 w-auto object-contain block"
             />
           </div>
 
@@ -45,7 +45,7 @@ export const GovtHeaderRibbon: React.FC = () => {
             <img
               src="./gov_sih_logo_transparent.png"
               alt="Smart India Hackathon 2026"
-              className="h-5 sm:h-5.5 max-h-6 w-auto object-contain block"
+              className="h-5 sm:h-6 max-h-6 w-auto object-contain block"
             />
           </div>
         </div>
