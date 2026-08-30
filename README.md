@@ -1,11 +1,16 @@
 # ⚡ OmniTransform AI — Open-Source Resource Bundle & Repository
 
+[![Live HTTPS Web Application](https://img.shields.io/badge/LIVE%20DEMO-HTTPS%20Web%20Application-brightgreen?style=for-the-badge&logo=github)](https://hrlpavan.github.io/omnitransform-ai-resources/)
+[![GitHub Pages Deployment](https://img.shields.io/badge/DEPLOYMENT-GitHub%20Pages-blue?style=for-the-badge&logo=githubpages)](https://hrlpavan.github.io/omnitransform-ai-resources/)
+
+> 🚀 **Live Production URL**: **[https://hrlpavan.github.io/omnitransform-ai-resources/](https://hrlpavan.github.io/omnitransform-ai-resources/)**  
 > **Smart India Hackathon (SIH 2026)** | **Problem Statement ID**: `26154`  
 > **Title**: *Gen AI Platform for Automated Content Transformation*  
 > **Organization**: National Technical Research Organisation (NTRO)  
 > **Theme**: Artificial Intelligence / Blockchain & Cybersecurity  
 > **Category**: Software  
 > **Team Name**: HRL  
+> **Founder & Managing Director**: Pavan Kumar Sadashiv  
 
 ---
 
