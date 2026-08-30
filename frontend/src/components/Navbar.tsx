@@ -3,13 +3,14 @@ import type { AudiencePersona } from '../types';
 import { Download, TrendingUp, HelpCircle } from 'lucide-react';
 
 interface NavbarProps {
+  onOpenVoiceGuide?: () => void;
   currentPersona: AudiencePersona;
   onPersonaChange: (p: AudiencePersona) => void;
   isProcessing: boolean;
   onOpenVentureModal: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ currentPersona, onPersonaChange, isProcessing, onOpenVentureModal }) => {
+export const Navbar: React.FC<NavbarProps> = ({ currentPersona, onPersonaChange, isProcessing, onOpenVentureModal, onOpenVoiceGuide }) => {
   return (
     <header className="sticky top-0 z-50 bg-white/85 backdrop-blur-xl backdrop-saturate-180 border-b border-black/[0.08] shadow-[0_1px_2px_rgba(0,0,0,0.02)] no-print transition-all w-full select-none">
       <div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8">
@@ -69,6 +70,15 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPersona, onPersonaChange,
 
           {/* Right Action Pills - Responsive with Zero Overflow / Zero Slidebar */}
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            <button
+              onClick={onOpenVoiceGuide}
+              className="flex items-center gap-1.5 px-3 h-8 sm:h-9 rounded-full bg-[#0071E3]/[0.08] hover:bg-[#0071E3]/[0.14] active:scale-[0.98] text-[#0071E3] text-xs font-semibold transition-all border border-[#0071E3]/20 cursor-pointer shadow-none whitespace-nowrap shrink-0"
+              title="Interactive Multilingual Voice Walkthrough"
+            >
+              <span className="text-sm leading-none">🎙️</span>
+              <span className="hidden sm:inline">Voice Guide</span>
+              <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-[#0071E3] text-white">8 Langs</span>
+            </button>
             <a
               href="#project-updates-hub"
               className="hidden xl:flex items-center gap-1.5 px-3 h-8 sm:h-9 rounded-full bg-[#000000]/[0.05] hover:bg-[#000000]/[0.08] active:scale-[0.98] text-[#1D1D1F] text-xs font-medium transition-all border border-black/[0.04] cursor-pointer shadow-none whitespace-nowrap shrink-0"

@@ -13,6 +13,7 @@ import { VoiceFAQSection } from './components/VoiceFAQSection';
 import { CitationInspectorModal } from './components/CitationInspectorModal';
 import { VentureStrategyModal } from './components/VentureStrategyModal';
 import { WorkforceModal } from './components/WorkforceModal';
+import { MultilingualVoiceGuideModal } from './components/MultilingualVoiceGuideModal';
 import { Footer } from './components/Footer';
 import confetti from 'canvas-confetti';
 
@@ -28,6 +29,7 @@ export const App: React.FC = () => {
   const [activeCitation, setActiveCitation] = useState<Citation | null>(null);
   const [showVentureModal, setShowVentureModal] = useState<boolean>(false);
   const [showWorkforceModal, setShowWorkforceModal] = useState<boolean>(false);
+  const [showVoiceGuideModal, setShowVoiceGuideModal] = useState<boolean>(false);
 
   const handleStartTransform = async () => {
     if (!selectedDoc) return;
@@ -79,6 +81,7 @@ export const App: React.FC = () => {
         onPersonaChange={handlePersonaChange}
         isProcessing={isProcessing}
         onOpenVentureModal={() => setShowVentureModal(true)}
+        onOpenVoiceGuide={() => setShowVoiceGuideModal(true)}
       />
 
       <main className="flex-1 w-full max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-14 py-8 space-y-10">
@@ -125,6 +128,7 @@ export const App: React.FC = () => {
         onClose={() => setShowWorkforceModal(false)}
       />
 
+      <MultilingualVoiceGuideModal isOpen={showVoiceGuideModal} onClose={() => setShowVoiceGuideModal(false)} />
       <Footer />
     </div>
   );
