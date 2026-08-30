@@ -1,6 +1,6 @@
 import React from 'react';
 import type { AudiencePersona } from '../types';
-import { Download, TrendingUp, HelpCircle } from 'lucide-react';
+import { Download, TrendingUp, HelpCircle, Mic } from 'lucide-react';
 
 interface NavbarProps {
   onOpenVoiceGuide?: () => void;
@@ -75,7 +75,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPersona, onPersonaChange,
               className="flex items-center gap-1.5 px-3 h-8 sm:h-9 rounded-full bg-[#0071E3]/[0.08] hover:bg-[#0071E3]/[0.14] active:scale-[0.98] text-[#0071E3] text-xs font-semibold transition-all border border-[#0071E3]/20 cursor-pointer shadow-none whitespace-nowrap shrink-0"
               title="Interactive Multilingual Voice Walkthrough"
             >
-              <span className="text-sm leading-none">🎙️</span>
+              <Mic className="w-3.5 h-3.5 text-[#0071E3] shrink-0" />
               <span className="hidden sm:inline">Voice Guide</span>
               <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-[#0071E3] text-white">8 Langs</span>
             </button>

@@ -335,7 +335,7 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
                         : 'bg-[#F5F5F7] text-[#1D1D1F] hover:bg-zinc-200 border-black/[0.04]'
                     }`}
                   >
-                    <span className="text-sm">{item.flag}</span>
+                    <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-black/[0.05] text-[#1D1D1F] leading-none uppercase">{item.code}</span>
                     <span className="text-xs font-semibold leading-tight">{item.nativeName}</span>
                     <span className={`text-[10px] leading-none ${isActive ? 'text-white/80' : 'text-[#86868B]'}`}>
                       {item.name}
@@ -370,7 +370,7 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
                 }`}
               >
                 <div className="font-semibold text-[#1D1D1F] flex items-center gap-1.5">
-                  <span>🌿 Natural Conversational</span>
+                  <span>Natural Conversational</span>
                 </div>
                 <span className="text-[10.5px] text-[#86868B] block mt-0.5">Smooth pacing with micro-breath pauses</span>
               </button>
@@ -384,7 +384,7 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
                 }`}
               >
                 <div className="font-semibold text-[#1D1D1F] flex items-center gap-1.5">
-                  <span>✨ Dynamic & Lively</span>
+                  <span>Dynamic & Lively</span>
                 </div>
                 <span className="text-[10.5px] text-[#86868B] block mt-0.5">Rich pitch inflections & emotional warmth</span>
               </button>
@@ -398,7 +398,7 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
                 }`}
               >
                 <div className="font-semibold text-[#1D1D1F] flex items-center gap-1.5">
-                  <span>👔 Executive Briefing</span>
+                  <span>Executive Briefing</span>
                 </div>
                 <span className="text-[10.5px] text-[#86868B] block mt-0.5">Calm, authoritative, clear cadence</span>
               </button>
@@ -576,7 +576,7 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
                             {st.title}
                           </h4>
                           <p className="text-xs text-[#1D1D1F] mt-1 font-medium leading-relaxed">
-                            👉 {st.actionText}
+                            {st.actionText}
                           </p>
                           <p className="text-[11.5px] text-[#6E6E73] mt-0.5 leading-relaxed">
                             {st.details}
