@@ -27,12 +27,13 @@ def build_exact_sih_deck(output_path="SIH2026_Idea_Presentation_PS26154.pptx"):
     FONT_TITLE = "Times New Roman"
     FONT_BODY = "Arial"
     LOGO_PATH = "sih_official_logo.png"
+    HRL_LOGO_PATH = "hrl_brand_logo.png"
     FLOWCHART_PATH = "omnitransform_pipeline_flowchart.png"
     
     # DEDICATED MASTER REPOSITORY & RESOURCES URL
     DEDICATED_REPO_URL = "https://github.com/hrlpavan/omnitransform-ai-resources"
 
-    def add_header_footer(slide, slide_num, center_title, team_name="OmniTransform"):
+    def add_header_footer(slide, slide_num, center_title, team_name="HRL"):
         # Top Left Team Oval
         team_oval = slide.shapes.add_shape(MSO_SHAPE.OVAL, Inches(0.4), Inches(0.2), Inches(1.8), Inches(0.95))
         team_oval.fill.solid()
@@ -43,11 +44,11 @@ def build_exact_sih_deck(output_path="SIH2026_Idea_Presentation_PS26154.pptx"):
         tf_team.word_wrap = True
         tf_team.vertical_anchor = MSO_ANCHOR.MIDDLE
         p1 = tf_team.paragraphs[0]
-        p1.text = team_name
-        p1.font.size = Pt(12)
+        p1.text = "TEAM: HRL"
         p1.font.bold = True
-        p1.font.name = FONT_BODY
+        p1.font.size = Pt(13)
         p1.font.color.rgb = COLOR_NAVY
+        p1.font.name = FONT_TITLE
         p1.alignment = PP_ALIGN.CENTER
 
         # Top Center Title
@@ -135,7 +136,9 @@ def build_exact_sih_deck(output_path="SIH2026_Idea_Presentation_PS26154.pptx"):
         r2.font.color.rgb = COLOR_FOOTER_BLUE if idx == 6 else COLOR_TEXT
         p.space_after = Pt(10)
 
-    if os.path.exists(LOGO_PATH):
+    if os.path.exists(HRL_LOGO_PATH):
+        slide1.shapes.add_picture(HRL_LOGO_PATH, Inches(9.4), Inches(2.2), width=Inches(3.3))
+    elif os.path.exists(LOGO_PATH):
         slide1.shapes.add_picture(LOGO_PATH, Inches(9.2), Inches(1.8), width=Inches(3.6))
 
     # =========================================================================
