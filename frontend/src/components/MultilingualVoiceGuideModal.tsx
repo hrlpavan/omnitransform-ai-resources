@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MULTILINGUAL_VOICE_GUIDES } from '../data/userGuideData';
-import { Play, Pause, Sparkles, Radio, X, Key, ShieldCheck, Volume2, Mic, Heart, Sliders } from 'lucide-react';
+import { Play, Pause, Sparkles, Radio, X, Key, ShieldCheck, Volume2, Mic, Heart, Sliders, CheckCircle2 } from 'lucide-react';
 import { convertTextToSpeechSDK, ELEVENLABS_VOICE_PRESETS } from '../services/elevenlabsService';
 
 interface MultilingualVoiceGuideModalProps {
@@ -14,8 +14,9 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
   const [selectedVoice, setSelectedVoice] = useState('21m00Tcm4TlvDq8ikWAM');
   const [humanizeCadence, setHumanizeCadence] = useState<'natural' | 'expressive' | 'executive'>('natural');
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
   const [currentSeconds, setCurrentSeconds] = useState(0);
-  const [totalSeconds, setTotalSeconds] = useState(38);
+  const [totalSeconds, setTotalSeconds] = useState(36);
   const [activeStep, setActiveStep] = useState(1);
   const [isSynthesizing, setIsSynthesizing] = useState(false);
   const [apiKey, setApiKey] = useState('');
@@ -23,6 +24,7 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const timerRef = useRef<number | null>(null);
+  const startTimeRef = useRef<number>(0);
   const guide = MULTILINGUAL_VOICE_GUIDES[selectedLang] || MULTILINGUAL_VOICE_GUIDES.en;
 
   useEffect(() => {
@@ -52,6 +54,7 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
     stopAllAudio();
     setSelectedLang(langCode);
     setCurrentSeconds(0);
+    setIsCompleted(false);
     setActiveStep(1);
 
     if (wasPlaying) {
@@ -98,6 +101,7 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
     if (isPlaying) {
       stopAllAudio();
     } else {
+      setIsCompleted(false);
       playHumanizedVoice(selectedLang, selectedVoice, selectedModel, humanizeCadence);
     }
   };
@@ -105,6 +109,7 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
   // Humanized 2.0 Speech Synthesizer Engine
   const playHumanizedVoice = (langCode: string, voiceId: string, model: string, cadence: string) => {
     stopAllAudio();
+    setIsCompleted(false);
     const targetGuide = MULTILINGUAL_VOICE_GUIDES[langCode] || MULTILINGUAL_VOICE_GUIDES.en;
     const cleanText = targetGuide.fullScript.replace(/\[.*?\]/g, '').trim();
 
@@ -114,14 +119,26 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
       const audio = new Audio(audioSrc);
       audio.playbackRate = cadence === 'expressive' ? 1.05 : (cadence === 'executive' ? 0.95 : 1.0);
 
+      const targetDuration = 38;
+      setTotalSeconds(targetDuration);
+      setCurrentSeconds(0);
+
       audio.onended = () => {
+        setCurrentSeconds(targetDuration);
+        setActiveStep(5);
+        setIsCompleted(true);
         setIsPlaying(false);
-        setCurrentSeconds(0);
+        setTimeout(() => {
+          setIsCompleted(false);
+          setCurrentSeconds(0);
+          setActiveStep(1);
+        }, 1500);
       };
+
       audio.ontimeupdate = () => {
         const cur = Math.floor(audio.currentTime);
         setCurrentSeconds(cur);
-        const stepIdx = Math.min(5, Math.floor((cur / (totalSeconds || 38)) * 5) + 1);
+        const stepIdx = Math.min(5, Math.floor((cur / (targetDuration || 38)) * 5) + 1);
         setActiveStep(stepIdx);
       };
 
@@ -145,49 +162,83 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
     const utter = new SpeechSynthesisUtterance(text);
     utter.lang = bcp47;
 
-    // Humanized Prosody & Pace:
-    // Natural human conversation is ~0.92x with slight breath pauses, not rushed 1.2x robotic speed!
-    let rate = 0.93;
-    if (cadence === 'expressive') rate = 0.96;
+    // Humanized Prosody & Natural Rate
+    let rate = 0.92;
+    if (cadence === 'expressive') rate = 0.95;
     if (cadence === 'executive') rate = 0.88;
-    if (model === 'eleven_flash_v2_5') rate = 1.05;
+    if (model === 'eleven_flash_v2_5') rate = 1.02;
     utter.rate = rate;
 
-    // Modulate pitch based on selected voice
+    // Modulate pitch based on voice selection
     if (voiceId === 'pNInz6obpgDQGcFmaJgB' || voiceId === 'TxGEqnHWrfWFTfGW9XjX') {
-      utter.pitch = 0.90; // Natural male chest resonance
+      utter.pitch = 0.92; // Natural chest resonance
     } else if (voiceId === 'EXAVITQu4vr4xnSDxMaL' || voiceId === '21m00Tcm4TlvDq8ikWAM') {
-      utter.pitch = 1.05; // Expressive female clarity
+      utter.pitch = 1.04; // Natural female warmth
     } else {
       utter.pitch = 1.0;
     }
 
-    // Select authentic native Indian voice if installed on user OS
+    // Find highest quality native neural Indic voice on client OS
     const voices = window.speechSynthesis.getVoices();
-    const langVoice = voices.find(v => 
+    const bestVoice = voices.find(v => 
+      (v.name.toLowerCase().includes('natural') || v.name.toLowerCase().includes('neural') || v.name.toLowerCase().includes('google') || v.name.toLowerCase().includes('online')) &&
+      (v.lang.toLowerCase().startsWith(bcp47.toLowerCase()) || v.lang.toLowerCase().replace('_', '-').startsWith(bcp47.slice(0, 2).toLowerCase()))
+    ) || voices.find(v => 
       v.lang.toLowerCase().startsWith(bcp47.toLowerCase()) || 
       v.lang.toLowerCase().replace('_', '-').startsWith(bcp47.slice(0, 2).toLowerCase())
     );
-    if (langVoice) {
-      utter.voice = langVoice;
+
+    if (bestVoice) {
+      utter.voice = bestVoice;
     }
 
-    const wordCount = text.split(/\s+/).length;
-    const estTotalSeconds = Math.max(24, Math.round((wordCount / 125) * 60));
-    setTotalSeconds(estTotalSeconds);
+    const wordCount = text.split(/\s+/).filter(Boolean).length;
+    // Accurate speech duration based on words and cadence
+    const calculatedDuration = Math.max(20, Math.round((wordCount / (120 * rate)) * 60));
+    setTotalSeconds(calculatedDuration);
     setCurrentSeconds(0);
+    startTimeRef.current = Date.now();
 
-    let elapsed = 0;
-    timerRef.current = window.setInterval(() => {
-      elapsed += 1;
-      setCurrentSeconds(elapsed);
-      const stepIdx = Math.min(5, Math.floor((elapsed / estTotalSeconds) * 5) + 1);
-      setActiveStep(stepIdx);
-    }, 1000);
-
-    utter.onend = () => {
-      stopAllAudio();
+    // Word boundary tracking for exact timeline synchronization
+    utter.onboundary = (event) => {
+      if (event.name === 'word') {
+        const charRatio = event.charIndex / (text.length || 1);
+        const estSec = Math.floor(charRatio * calculatedDuration);
+        setCurrentSeconds(estSec);
+        const stepIdx = Math.min(5, Math.floor(charRatio * 5) + 1);
+        setActiveStep(stepIdx);
+      }
     };
+
+    // Smooth second ticker fallback
+    timerRef.current = window.setInterval(() => {
+      const elapsed = Math.floor((Date.now() - startTimeRef.current) / 1000);
+      if (elapsed >= calculatedDuration) {
+        setCurrentSeconds(calculatedDuration);
+        setActiveStep(5);
+        if (timerRef.current) clearInterval(timerRef.current);
+      } else {
+        setCurrentSeconds(elapsed);
+        const stepIdx = Math.min(5, Math.floor((elapsed / calculatedDuration) * 5) + 1);
+        setActiveStep(stepIdx);
+      }
+    }, 250);
+
+    // Exact onend completion handler: fills timeline to 100% and marks completed
+    utter.onend = () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+      setCurrentSeconds(calculatedDuration);
+      setActiveStep(5);
+      setIsCompleted(true);
+      setIsPlaying(false);
+
+      setTimeout(() => {
+        setIsCompleted(false);
+        setCurrentSeconds(0);
+        setActiveStep(1);
+      }, 1500);
+    };
+
     utter.onerror = () => {
       stopAllAudio();
     };
@@ -196,10 +247,11 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
     setIsPlaying(true);
   };
 
-  // Dynamic Live Synthesis via ElevenLabs SDK (with Humanized voiceSettings)
+  // Dynamic Live Synthesis via ElevenLabs SDK
   const handleLiveElevenLabsConvert = async () => {
     setIsSynthesizing(true);
     stopAllAudio();
+    setIsCompleted(false);
 
     try {
       const { audioUrl, duration } = await convertTextToSpeechSDK({
@@ -212,15 +264,26 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
       });
 
       setTotalSeconds(duration);
+      setCurrentSeconds(0);
       const audio = new Audio(audioUrl);
+
       audio.onended = () => {
+        setCurrentSeconds(duration);
+        setActiveStep(5);
+        setIsCompleted(true);
         setIsPlaying(false);
-        setCurrentSeconds(0);
+
+        setTimeout(() => {
+          setIsCompleted(false);
+          setCurrentSeconds(0);
+          setActiveStep(1);
+        }, 1500);
       };
+
       audio.ontimeupdate = () => {
         const cur = Math.floor(audio.currentTime);
         setCurrentSeconds(cur);
-        const stepIdx = Math.min(5, Math.floor((cur / duration) * 5) + 1);
+        const stepIdx = Math.min(5, Math.floor((cur / (duration || 30)) * 5) + 1);
         setActiveStep(stepIdx);
       };
 
@@ -237,22 +300,21 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
 
   if (!isOpen) return null;
 
-  const progressPercent = totalSeconds > 0 ? (currentSeconds / totalSeconds) * 100 : 0;
+  const progressPercent = totalSeconds > 0 ? Math.min(100, (currentSeconds / totalSeconds) * 100) : 0;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-3 sm:p-6 overflow-y-auto no-print">
       <div className="bg-white rounded-[28px] border border-black/[0.08] max-w-5xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden my-auto animate-in fade-in zoom-in-95 duration-200">
         
-        {/* Modal Header Bar */}
+        {/* Modal Header Bar - Pure Transparent State Emblem without any Squircle Box */}
         <div className="p-5 sm:p-6 bg-white border-b border-black/[0.08] flex items-center justify-between gap-4 sticky top-0 z-20">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#F5F5F7] border border-black/[0.08] flex items-center justify-center p-1 shadow-xs shrink-0">
-              <img
-                src="./national_emblem_india_transparent.png"
-                alt="State Emblem of India"
-                className="h-7 w-auto object-contain"
-              />
-            </div>
+          <div className="flex items-center gap-3 sm:gap-4">
+            {/* Standalone Transparent Emblem (Zero Squircle Box) */}
+            <img
+              src="./national_emblem_india_transparent.png"
+              alt="State Emblem of India - Satyameva Jayate"
+              className="h-9 sm:h-10 w-auto object-contain block shrink-0"
+            />
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-[11px] font-bold text-hrl-crimson uppercase tracking-wider">
@@ -335,7 +397,7 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
                         : 'bg-[#F5F5F7] text-[#1D1D1F] hover:bg-zinc-200 border-black/[0.04]'
                     }`}
                   >
-                    <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-black/[0.05] text-[#1D1D1F] leading-none uppercase">{item.code}</span>
+                    <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-black/[0.06] text-inherit leading-none uppercase">{item.code}</span>
                     <span className="text-xs font-semibold leading-tight">{item.nativeName}</span>
                     <span className={`text-[10px] leading-none ${isActive ? 'text-white/80' : 'text-[#86868B]'}`}>
                       {item.name}
@@ -369,9 +431,7 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
                     : 'bg-white/60 text-[#515154] hover:bg-white border-black/[0.04]'
                 }`}
               >
-                <div className="font-semibold text-[#1D1D1F] flex items-center gap-1.5">
-                  <span>Natural Conversational</span>
-                </div>
+                <div className="font-semibold text-[#1D1D1F]">Natural Conversational</div>
                 <span className="text-[10.5px] text-[#86868B] block mt-0.5">Smooth pacing with micro-breath pauses</span>
               </button>
 
@@ -383,9 +443,7 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
                     : 'bg-white/60 text-[#515154] hover:bg-white border-black/[0.04]'
                 }`}
               >
-                <div className="font-semibold text-[#1D1D1F] flex items-center gap-1.5">
-                  <span>Dynamic & Lively</span>
-                </div>
+                <div className="font-semibold text-[#1D1D1F]">Dynamic & Lively</div>
                 <span className="text-[10.5px] text-[#86868B] block mt-0.5">Rich pitch inflections & emotional warmth</span>
               </button>
 
@@ -397,9 +455,7 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
                     : 'bg-white/60 text-[#515154] hover:bg-white border-black/[0.04]'
                 }`}
               >
-                <div className="font-semibold text-[#1D1D1F] flex items-center gap-1.5">
-                  <span>Executive Briefing</span>
-                </div>
+                <div className="font-semibold text-[#1D1D1F]">Executive Briefing</div>
                 <span className="text-[10.5px] text-[#86868B] block mt-0.5">Calm, authoritative, clear cadence</span>
               </button>
             </div>
@@ -485,17 +541,19 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
               ))}
             </div>
 
-            {/* Progress Bar & Timers */}
+            {/* Progress Bar & Timers - Perfectly Synchronized */}
             <div className="space-y-1.5">
-              <div className="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden">
+              <div className="w-full bg-zinc-800 h-2 rounded-full overflow-hidden">
                 <div
-                  className="bg-gradient-to-r from-hrl-crimson via-rose-500 to-[#0071E3] h-full rounded-full transition-all duration-200"
+                  className="bg-gradient-to-r from-hrl-crimson via-rose-500 to-[#0071E3] h-full rounded-full transition-all duration-150"
                   style={{ width: `${progressPercent}%` }}
                 />
               </div>
               <div className="flex justify-between text-[11px] font-mono text-zinc-400">
                 <span>{String(Math.floor(currentSeconds / 60)).padStart(2, '0')}:{String(currentSeconds % 60).padStart(2, '0')}</span>
-                <span className="text-[#0071E3] font-semibold">Active: Step {activeStep} of 5</span>
+                <span className={isCompleted ? 'text-emerald-400 font-semibold flex items-center gap-1' : 'text-[#0071E3] font-semibold'}>
+                  {isCompleted ? <><CheckCircle2 className="w-3 h-3" /> Walkthrough Completed (100%)</> : `Step ${activeStep} of 5`}
+                </span>
                 <span>{String(Math.floor(totalSeconds / 60)).padStart(2, '0')}:{String(totalSeconds % 60).padStart(2, '0')}</span>
               </div>
             </div>
