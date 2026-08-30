@@ -137,6 +137,24 @@ def cmd_build():
 
 def cmd_deploy():
     cmd_build()
+    # Sync to docs/ and root on main branch for universal GitHub Pages compatibility
+    docs_dir = os.path.join(REPO_ROOT, "docs")
+    if os.path.exists(docs_dir):
+        import shutil
+        shutil.rmtree(docs_dir)
+    import shutil
+    shutil.copytree(dist_dir, docs_dir)
+    shutil.copy(os.path.join(dist_dir, "index.html"), os.path.join(REPO_ROOT, "index.html"))
+    shutil.copy(os.path.join(dist_dir, "404.html"), os.path.join(REPO_ROOT, "404.html"))
+    with open(os.path.join(REPO_ROOT, ".nojekyll"), "w") as f:
+        f.write("")
+    root_assets = os.path.join(REPO_ROOT, "assets")
+    dist_assets = os.path.join(dist_dir, "assets")
+    if os.path.exists(dist_assets):
+        if os.path.exists(root_assets):
+            shutil.rmtree(root_assets)
+        shutil.copytree(dist_assets, root_assets)
+
     print_header("Deploying Live Static Bundle to GitHub Pages (gh-pages)")
     dist_dir = os.path.join(FRONTEND_DIR, "dist")
     
