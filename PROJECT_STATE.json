@@ -1,0 +1,21 @@
+{
+  "project": "OmniTransform AI",
+  "team": "HRL International (Team ID: 104580)",
+  "challenge": "SIH 2026 Problem Statement PS26154 (NTRO)",
+  "design_standard": "100% Apple.com HIG & San Francisco SF Pro Typography",
+  "live_url": "https://hrlpavan.github.io/omnitransform-ai-resources/",
+  "github_repo": "https://github.com/hrlpavan/omnitransform-ai-resources.git",
+  "last_context_sync": "2026-08-30 20:43:34 UTC",
+  "components_guarded": [
+    "GovtHeaderRibbon.tsx",
+    "Navbar.tsx",
+    "DocumentUploader.tsx",
+    "ExecutiveMemoTab.tsx",
+    "SlideDeckTab.tsx",
+    "InfographicsTab.tsx",
+    "VoicePodcastTab.tsx",
+    "ProjectUpdatesAudioHub.tsx",
+    "VoiceFAQSection.tsx",
+    "Footer.tsx"
+  ]
+}
