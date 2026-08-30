@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MULTILINGUAL_VOICE_GUIDES } from '../data/userGuideData';
-import { Play, Pause, Globe2, Sparkles, Radio, X, Key, ShieldCheck, Volume2, Mic, Heart, Sliders } from 'lucide-react';
+import { Play, Pause, Sparkles, Radio, X, Key, ShieldCheck, Volume2, Mic, Heart, Sliders } from 'lucide-react';
 import { convertTextToSpeechSDK, ELEVENLABS_VOICE_PRESETS } from '../services/elevenlabsService';
 
 interface MultilingualVoiceGuideModalProps {
@@ -246,8 +246,12 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
         {/* Modal Header Bar */}
         <div className="p-5 sm:p-6 bg-white border-b border-black/[0.08] flex items-center justify-between gap-4 sticky top-0 z-20">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#0071E3] to-rose-600 flex items-center justify-center text-white shadow-sm shrink-0">
-              <Globe2 className="w-5 h-5" />
+            <div className="w-10 h-10 rounded-2xl bg-[#F5F5F7] border border-black/[0.08] flex items-center justify-center p-1 shadow-xs shrink-0">
+              <img
+                src="./national_emblem_india_transparent.png"
+                alt="State Emblem of India"
+                className="h-7 w-auto object-contain"
+              />
             </div>
             <div>
               <div className="flex items-center gap-2">
