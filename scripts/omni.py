@@ -138,6 +138,18 @@ def cmd_build():
 def cmd_deploy():
     cmd_build()
     dist_dir = os.path.join(FRONTEND_DIR, "dist")
+    
+    # Write .nojekyll and 404 fallback to dist first
+    with open(os.path.join(dist_dir, ".nojekyll"), "w") as f:
+        f.write("")
+    
+    index_html = os.path.join(dist_dir, "index.html")
+    if os.path.exists(index_html):
+        with open(index_html, "r", encoding="utf-8") as f:
+            idx_content = f.read()
+        with open(os.path.join(dist_dir, "404.html"), "w", encoding="utf-8") as f:
+            f.write(idx_content)
+
     # Sync to docs/ and root on main branch for universal GitHub Pages compatibility
     docs_dir = os.path.join(REPO_ROOT, "docs")
     if os.path.exists(docs_dir):
@@ -157,17 +169,6 @@ def cmd_deploy():
         shutil.copytree(dist_assets, root_assets)
 
     print_header("Deploying Live Static Bundle to GitHub Pages (gh-pages)")
-    
-    # Write .nojekyll and 404 fallback
-    with open(os.path.join(dist_dir, ".nojekyll"), "w") as f:
-        f.write("")
-    
-    index_html = os.path.join(dist_dir, "index.html")
-    if os.path.exists(index_html):
-        with open(index_html, "r", encoding="utf-8") as f:
-            idx_content = f.read()
-        with open(os.path.join(dist_dir, "404.html"), "w", encoding="utf-8") as f:
-            f.write(idx_content)
 
     # Initialize temporary git repo in dist
     git_dir = os.path.join(dist_dir, ".git")
