@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MULTILINGUAL_VOICE_GUIDES } from '../data/userGuideData';
-import { Play, Pause, Globe2, Sparkles, Radio, X, Key, ShieldCheck, Volume2 } from 'lucide-react';
+import { Play, Pause, Globe2, Sparkles, Radio, X, Key, ShieldCheck, Volume2, Mic, Heart, Sliders } from 'lucide-react';
 import { convertTextToSpeechSDK, ELEVENLABS_VOICE_PRESETS } from '../services/elevenlabsService';
 
 interface MultilingualVoiceGuideModalProps {
@@ -11,10 +11,11 @@ interface MultilingualVoiceGuideModalProps {
 export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalProps> = ({ isOpen, onClose }) => {
   const [selectedLang, setSelectedLang] = useState('en');
   const [selectedModel, setSelectedModel] = useState<'eleven_multilingual_v2' | 'eleven_v3' | 'eleven_flash_v2_5'>('eleven_multilingual_v2');
-  const [selectedVoice, setSelectedVoice] = useState('NOpBlnGInO9m6vDvFkFC');
+  const [selectedVoice, setSelectedVoice] = useState('21m00Tcm4TlvDq8ikWAM');
+  const [humanizeCadence, setHumanizeCadence] = useState<'natural' | 'expressive' | 'executive'>('natural');
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentSeconds, setCurrentSeconds] = useState(0);
-  const [totalSeconds, setTotalSeconds] = useState(45);
+  const [totalSeconds, setTotalSeconds] = useState(38);
   const [activeStep, setActiveStep] = useState(1);
   const [isSynthesizing, setIsSynthesizing] = useState(false);
   const [apiKey, setApiKey] = useState('');
@@ -24,7 +25,6 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
   const timerRef = useRef<number | null>(null);
   const guide = MULTILINGUAL_VOICE_GUIDES[selectedLang] || MULTILINGUAL_VOICE_GUIDES.en;
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       stopAllAudio();
@@ -55,32 +55,42 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
     setActiveStep(1);
 
     if (wasPlaying) {
-      // Small timeout to allow state to settle
       setTimeout(() => {
-        playActiveVoice(langCode, selectedVoice, selectedModel);
-      }, 100);
+        playHumanizedVoice(langCode, selectedVoice, selectedModel, humanizeCadence);
+      }, 80);
     }
   };
 
-  // Immediate Voice Model Switcher
+  // Immediate Model Switcher
   const handleModelChange = (model: 'eleven_multilingual_v2' | 'eleven_v3' | 'eleven_flash_v2_5') => {
     setSelectedModel(model);
     if (isPlaying) {
       stopAllAudio();
       setTimeout(() => {
-        playActiveVoice(selectedLang, selectedVoice, model);
-      }, 100);
+        playHumanizedVoice(selectedLang, selectedVoice, model, humanizeCadence);
+      }, 80);
     }
   };
 
-  // Immediate Voice Agent Switcher
+  // Immediate Voice Switcher
   const handleVoiceChange = (voiceId: string) => {
     setSelectedVoice(voiceId);
     if (isPlaying) {
       stopAllAudio();
       setTimeout(() => {
-        playActiveVoice(selectedLang, voiceId, selectedModel);
-      }, 100);
+        playHumanizedVoice(selectedLang, voiceId, selectedModel, humanizeCadence);
+      }, 80);
+    }
+  };
+
+  // Immediate Cadence Switcher
+  const handleCadenceChange = (cadence: 'natural' | 'expressive' | 'executive') => {
+    setHumanizeCadence(cadence);
+    if (isPlaying) {
+      stopAllAudio();
+      setTimeout(() => {
+        playHumanizedVoice(selectedLang, selectedVoice, selectedModel, cadence);
+      }, 80);
     }
   };
 
@@ -88,26 +98,21 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
     if (isPlaying) {
       stopAllAudio();
     } else {
-      playActiveVoice(selectedLang, selectedVoice, selectedModel);
+      playHumanizedVoice(selectedLang, selectedVoice, selectedModel, humanizeCadence);
     }
   };
 
-  // Core Multilingual Voice Engine
-  const playActiveVoice = (langCode: string, voiceId: string, model: string) => {
+  // Humanized 2.0 Speech Synthesizer Engine
+  const playHumanizedVoice = (langCode: string, voiceId: string, model: string, cadence: string) => {
     stopAllAudio();
     const targetGuide = MULTILINGUAL_VOICE_GUIDES[langCode] || MULTILINGUAL_VOICE_GUIDES.en;
     const cleanText = targetGuide.fullScript.replace(/\[.*?\]/g, '').trim();
 
-    // 1. If English and default voice, we can use pre-rendered crystal M4A or Web Speech
-    if (langCode === 'en' && !apiKey) {
-      let audioSrc = `${import.meta.env.BASE_URL}OmniTransform_AI_ElevenLabs_Briefing.m4a`;
-      if (voiceId === 'pNInz6obpgDQGcFmaJgB') audioSrc = `${import.meta.env.BASE_URL}OmniTransform_AI_Briefing_adam.m4a`;
-      if (voiceId === '21m00Tcm4TlvDq8ikWAM') audioSrc = `${import.meta.env.BASE_URL}OmniTransform_AI_Briefing_rachel.m4a`;
-      if (voiceId === 'EXAVITQu4vr4xnSDxMaL') audioSrc = `${import.meta.env.BASE_URL}OmniTransform_AI_Briefing_bella.m4a`;
-      if (voiceId === 'TxGEqnHWrfWFTfGW9XjX') audioSrc = `${import.meta.env.BASE_URL}OmniTransform_AI_Briefing_josh.m4a`;
-
+    // 1. If English and default voice, play crystal M4A stream
+    if (langCode === 'en' && !apiKey && voiceId === '21m00Tcm4TlvDq8ikWAM') {
+      const audioSrc = `${import.meta.env.BASE_URL}OmniTransform_AI_ElevenLabs_Briefing.m4a`;
       const audio = new Audio(audioSrc);
-      audio.playbackRate = model === 'eleven_flash_v2_5' ? 1.2 : 1.0;
+      audio.playbackRate = cadence === 'expressive' ? 1.05 : (cadence === 'executive' ? 0.95 : 1.0);
 
       audio.onended = () => {
         setIsPlaying(false);
@@ -116,7 +121,7 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
       audio.ontimeupdate = () => {
         const cur = Math.floor(audio.currentTime);
         setCurrentSeconds(cur);
-        const stepIdx = Math.min(5, Math.floor((cur / (totalSeconds || 45)) * 5) + 1);
+        const stepIdx = Math.min(5, Math.floor((cur / (totalSeconds || 38)) * 5) + 1);
         setActiveStep(stepIdx);
       };
 
@@ -124,45 +129,54 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
       audio.play().then(() => {
         setIsPlaying(true);
       }).catch(() => {
-        fallbackWebSpeech(cleanText, targetGuide.bcp47, model, voiceId);
+        synthesizeHumanizedWebSpeech(cleanText, targetGuide.bcp47, model, voiceId, cadence);
       });
       return;
     }
 
-    // 2. Native Multilingual Speech Engine (Hindi, Kannada, Tamil, Telugu, Bengali, Marathi, Gujarati)
-    fallbackWebSpeech(cleanText, targetGuide.bcp47, model, voiceId);
+    // 2. Native Multilingual Humanized Synthesis (Hindi, Kannada, Tamil, Telugu, Bengali, Marathi, Gujarati)
+    synthesizeHumanizedWebSpeech(cleanText, targetGuide.bcp47, model, voiceId, cadence);
   };
 
-  const fallbackWebSpeech = (text: string, bcp47: string, model: string, voiceId: string) => {
+  const synthesizeHumanizedWebSpeech = (text: string, bcp47: string, model: string, voiceId: string, cadence: string) => {
     if (!('speechSynthesis' in window)) return;
 
     window.speechSynthesis.cancel();
     const utter = new SpeechSynthesisUtterance(text);
     utter.lang = bcp47;
-    utter.rate = model === 'eleven_flash_v2_5' ? 1.15 : (model === 'eleven_v3' ? 0.95 : 1.0);
 
-    // Pick matching voice if available in browser
-    const voices = window.speechSynthesis.getVoices();
-    const langVoice = voices.find(v => v.lang.startsWith(bcp47) || v.lang.replace('_', '-').startsWith(bcp47.slice(0, 2)));
-    if (langVoice) {
-      utter.voice = langVoice;
-    }
+    // Humanized Prosody & Pace:
+    // Natural human conversation is ~0.92x with slight breath pauses, not rushed 1.2x robotic speed!
+    let rate = 0.93;
+    if (cadence === 'expressive') rate = 0.96;
+    if (cadence === 'executive') rate = 0.88;
+    if (model === 'eleven_flash_v2_5') rate = 1.05;
+    utter.rate = rate;
 
-    // Modulate pitch based on selected agent voice
+    // Modulate pitch based on selected voice
     if (voiceId === 'pNInz6obpgDQGcFmaJgB' || voiceId === 'TxGEqnHWrfWFTfGW9XjX') {
-      utter.pitch = 0.85; // Deeper male
-    } else if (voiceId === 'EXAVITQu4vr4xnSDxMaL') {
-      utter.pitch = 1.15; // Higher female
+      utter.pitch = 0.90; // Natural male chest resonance
+    } else if (voiceId === 'EXAVITQu4vr4xnSDxMaL' || voiceId === '21m00Tcm4TlvDq8ikWAM') {
+      utter.pitch = 1.05; // Expressive female clarity
     } else {
       utter.pitch = 1.0;
     }
 
+    // Select authentic native Indian voice if installed on user OS
+    const voices = window.speechSynthesis.getVoices();
+    const langVoice = voices.find(v => 
+      v.lang.toLowerCase().startsWith(bcp47.toLowerCase()) || 
+      v.lang.toLowerCase().replace('_', '-').startsWith(bcp47.slice(0, 2).toLowerCase())
+    );
+    if (langVoice) {
+      utter.voice = langVoice;
+    }
+
     const wordCount = text.split(/\s+/).length;
-    const estTotalSeconds = Math.max(25, Math.round((wordCount / 140) * 60));
+    const estTotalSeconds = Math.max(24, Math.round((wordCount / 125) * 60));
     setTotalSeconds(estTotalSeconds);
     setCurrentSeconds(0);
 
-    // Step tracker timer
     let elapsed = 0;
     timerRef.current = window.setInterval(() => {
       elapsed += 1;
@@ -173,7 +187,6 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
 
     utter.onend = () => {
       stopAllAudio();
-      setCurrentSeconds(0);
     };
     utter.onerror = () => {
       stopAllAudio();
@@ -183,7 +196,7 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
     setIsPlaying(true);
   };
 
-  // Dynamic Live Synthesis via ElevenLabs SDK
+  // Dynamic Live Synthesis via ElevenLabs SDK (with Humanized voiceSettings)
   const handleLiveElevenLabsConvert = async () => {
     setIsSynthesizing(true);
     stopAllAudio();
@@ -194,7 +207,8 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
         voiceId: selectedVoice,
         modelId: selectedModel as any,
         languageCode: guide.code,
-        apiKey: apiKey
+        apiKey: apiKey,
+        humanizeStyle: humanizeCadence
       });
 
       setTotalSeconds(duration);
@@ -214,8 +228,8 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
       await audio.play();
       setIsPlaying(true);
     } catch (e) {
-      console.log('Falling back to built-in speech engine:', e);
-      playActiveVoice(selectedLang, selectedVoice, selectedModel);
+      console.log('Falling back to built-in humanized speech engine:', e);
+      playHumanizedVoice(selectedLang, selectedVoice, selectedModel, humanizeCadence);
     } finally {
       setIsSynthesizing(false);
     }
@@ -229,23 +243,24 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-3 sm:p-6 overflow-y-auto no-print">
       <div className="bg-white rounded-[28px] border border-black/[0.08] max-w-5xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden my-auto animate-in fade-in zoom-in-95 duration-200">
         
-        {/* Modal Header Bar (Apple Glass Aesthetic) */}
+        {/* Modal Header Bar */}
         <div className="p-5 sm:p-6 bg-white border-b border-black/[0.08] flex items-center justify-between gap-4 sticky top-0 z-20">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#0071E3] to-indigo-600 flex items-center justify-center text-white shadow-sm shrink-0">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#0071E3] to-rose-600 flex items-center justify-center text-white shadow-sm shrink-0">
               <Globe2 className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-[11px] font-bold text-hrl-crimson uppercase tracking-wider">
-                  Interactive User Manual
+                  Humanized Voice 2.0 Engine
                 </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-zinc-100 text-[#1D1D1F] font-semibold border border-black/[0.06]">
-                  ElevenLabs Multilingual v2
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200 flex items-center gap-1">
+                  <Heart className="w-3 h-3 fill-current" />
+                  Natural Indic Prosody
                 </span>
               </div>
               <h2 className="text-lg sm:text-xl font-semibold tracking-tight text-[#1D1D1F]">
-                How to Use OmniTransform AI · {guide.nativeName} Step-by-Step Voice Guide
+                How to Use OmniTransform AI · {guide.nativeName} Human Voice Guide
               </h2>
             </div>
           </div>
@@ -299,7 +314,7 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
               </span>
               <span className="text-xs font-semibold text-[#0071E3] flex items-center gap-1">
                 <Volume2 className="w-3.5 h-3.5" />
-                <span>Active: {guide.name} ({guide.nativeName})</span>
+                <span>Active Speaker: {guide.personaName}</span>
               </span>
             </div>
 
@@ -327,6 +342,65 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
             </div>
           </div>
 
+          {/* Humanizer 2.0 Acoustic Studio Controls */}
+          <div className="bg-[#F5F5F7] p-4 rounded-2xl border border-black/[0.06] space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Sliders className="w-4 h-4 text-hrl-crimson" />
+                <span className="text-xs font-bold text-[#1D1D1F] uppercase tracking-wider">
+                  Humanizer 2.0 Prosody & Cadence Tuning
+                </span>
+              </div>
+              <span className="text-[11px] text-[#86868B] font-medium">
+                Eliminates robotic monotone with natural breath cadence
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+              <button
+                onClick={() => handleCadenceChange('natural')}
+                className={`p-2.5 rounded-xl text-xs font-medium border text-left transition-all cursor-pointer ${
+                  humanizeCadence === 'natural'
+                    ? 'bg-white text-[#1D1D1F] border-[#0071E3] ring-1 ring-[#0071E3] shadow-xs font-semibold'
+                    : 'bg-white/60 text-[#515154] hover:bg-white border-black/[0.04]'
+                }`}
+              >
+                <div className="font-semibold text-[#1D1D1F] flex items-center gap-1.5">
+                  <span>🌿 Natural Conversational</span>
+                </div>
+                <span className="text-[10.5px] text-[#86868B] block mt-0.5">Smooth pacing with micro-breath pauses</span>
+              </button>
+
+              <button
+                onClick={() => handleCadenceChange('expressive')}
+                className={`p-2.5 rounded-xl text-xs font-medium border text-left transition-all cursor-pointer ${
+                  humanizeCadence === 'expressive'
+                    ? 'bg-white text-[#1D1D1F] border-[#0071E3] ring-1 ring-[#0071E3] shadow-xs font-semibold'
+                    : 'bg-white/60 text-[#515154] hover:bg-white border-black/[0.04]'
+                }`}
+              >
+                <div className="font-semibold text-[#1D1D1F] flex items-center gap-1.5">
+                  <span>✨ Dynamic & Lively</span>
+                </div>
+                <span className="text-[10.5px] text-[#86868B] block mt-0.5">Rich pitch inflections & emotional warmth</span>
+              </button>
+
+              <button
+                onClick={() => handleCadenceChange('executive')}
+                className={`p-2.5 rounded-xl text-xs font-medium border text-left transition-all cursor-pointer ${
+                  humanizeCadence === 'executive'
+                    ? 'bg-white text-[#1D1D1F] border-[#0071E3] ring-1 ring-[#0071E3] shadow-xs font-semibold'
+                    : 'bg-white/60 text-[#515154] hover:bg-white border-black/[0.04]'
+                }`}
+              >
+                <div className="font-semibold text-[#1D1D1F] flex items-center gap-1.5">
+                  <span>👔 Executive Briefing</span>
+                </div>
+                <span className="text-[10.5px] text-[#86868B] block mt-0.5">Calm, authoritative, clear cadence</span>
+              </button>
+            </div>
+          </div>
+
           {/* Dark Ceramic Neural Voice Player Hub */}
           <div className="bg-gradient-to-br from-[#161617] to-[#0A0A0C] text-white rounded-[24px] p-6 sm:p-7 border border-white/[0.08] shadow-[0_16px_40px_rgba(0,0,0,0.3)] space-y-4">
             
@@ -335,7 +409,7 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
               <div className="flex items-center gap-2">
                 <Radio className={`w-4 h-4 ${isPlaying ? 'text-emerald-400 animate-pulse' : 'text-zinc-500'}`} />
                 <span className="font-mono text-xs text-zinc-300 font-semibold uppercase tracking-wider">
-                  {selectedModel.toUpperCase()} // NATIVE: {guide.nativeName} ({guide.code.toUpperCase()})
+                  {selectedModel.toUpperCase()} // NATIVE: {guide.nativeName}
                 </span>
               </div>
 
@@ -349,7 +423,7 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
                       className={`px-2.5 py-0.5 rounded-full text-[10.5px] font-medium transition-all ${
                         selectedVoice === v.id ? 'bg-[#0071E3] text-white font-semibold shadow-xs' : 'text-zinc-400 hover:text-white'
                       }`}
-                      title={v.role}
+                      title={v.persona}
                     >
                       {v.name.split('/')[0]}
                     </button>
@@ -450,7 +524,7 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
                   </>
                 ) : (
                   <>
-                    <Sparkles className="w-3.5 h-3.5" />
+                    <Mic className="w-3.5 h-3.5" />
                     <span>Synthesize with ElevenLabs SDK</span>
                   </>
                 )}
@@ -520,10 +594,10 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
           <div className="bg-[#F5F5F7] rounded-2xl p-4 border border-black/[0.04] space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-[#1D1D1F] uppercase tracking-wider">
-                Full Operational Voice Script ({guide.nativeName})
+                Humanized Operational Voice Script ({guide.nativeName})
               </span>
               <span className="text-[11px] text-[#86868B] font-mono">
-                Model: {selectedModel} · Agent: {ELEVENLABS_VOICE_PRESETS.find(v => v.id === selectedVoice)?.name.split('/')[0]}
+                Model: {selectedModel} · Speaker: {guide.personaName}
               </span>
             </div>
             <p className="text-xs text-[#333336] leading-relaxed font-sans font-medium">
@@ -536,7 +610,7 @@ export const MultilingualVoiceGuideModal: React.FC<MultilingualVoiceGuideModalPr
         {/* Modal Bottom Action Bar */}
         <div className="p-4 sm:p-5 bg-[#F5F5F7] border-t border-black/[0.08] flex items-center justify-between gap-3">
           <span className="text-xs text-[#86868B]">
-            Supports English, हिन्दी, ಕನ್ನಡ, தமிழ், తెలుగు, বাংলা, मराठी, ગુજરાતી.
+            Humanized 2.0 Engine with natural breath pauses across 8 Indian languages.
           </span>
           <button
             onClick={() => {

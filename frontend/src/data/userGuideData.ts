@@ -12,10 +12,10 @@ export interface LanguageVoiceGuide {
   name: string;
   nativeName: string;
   flag: string;
+  personaName: string;
   title: string;
   subtitle: string;
   fullScript: string;
-  stepAudioScripts: string[];
   steps: GuideStep[];
 }
 
@@ -23,40 +23,34 @@ export const MULTILINGUAL_VOICE_GUIDES: Record<string, LanguageVoiceGuide> = {
   en: {
     code: 'en',
     bcp47: 'en-IN',
-    name: 'English',
-    nativeName: 'English',
-    flag: '🇬🇧',
-    title: 'Interactive Webpage User Manual',
-    subtitle: 'Clear operational steps to transform documents and explore 5 synchronized formats.',
-    fullScript: 'Here is how to use OmniTransform AI step-by-step. Step 1: Scroll to the Document Ingestion section and click on any sample advisory, or drag-and-drop your own PDF report. Step 2: At the top navbar, select your audience persona: click Executive for strategic briefs, Technical for engineering analysis, or Public for citizen advisories. Step 3: Click the red "Transform Document Now" button and watch the live visualizer parse tables and OCR in under 10 seconds. Step 4: When ready, explore the 5 tabs below: Tab 1 for 1-Page Executive Memo, Tab 2 for Keynote Slides, Tab 3 for Bento Infographics, Tab 4 for 4 Indian Language Bulletins, and Tab 5 for Neural Audio. Step 5: Click any citation tag like [p.3:12] to inspect original PDF bounding boxes and verify source truth. Step 6: In Tab 5, test the ElevenLabs studio to synthesize custom speech with emotional tags.',
-    stepAudioScripts: [
-      'Step 1: Select an advisory preset or drag-and-drop your custom PDF document into the upload zone.',
-      'Step 2: Choose your audience persona from the top navigation: Executive, Technical, or Public.',
-      'Step 3: Click the red Transform Document Now button to start the multi-format transformation engine.',
-      'Step 4: Explore the 5 synchronized output formats across the dashboard tabs: Memo, Slides, Infographics, Regional News, and Audio.',
-      'Step 5: Click any citation badge to view exact source bounding box coordinates, and test the ElevenLabs voice synthesis studio.'
-    ],
+    name: 'Indian English',
+    nativeName: 'English (India)',
+    flag: '🇮🇳',
+    personaName: 'Aditi · Natural Indian Voice',
+    title: 'Interactive Webpage Walkthrough',
+    subtitle: 'Clear, human-narrated guide to transform complex documents in seconds.',
+    fullScript: 'Hello there! Let me guide you through OmniTransform AI step by step. ... First, scroll to the Document Ingestion section and click on any sample advisory... or drop in your own technical PDF. ... Next, look at the top navigation bar and select your target audience: choose "Executive" for high-level summaries, "Technical" for deep-dive analysis, or "Public" for easy citizen alerts. ... Now, click the red "Transform Document Now" button. ... In less than ten seconds, our single-pass pipeline parses tables, coordinates, and text. ... Finally, explore the five tabs below: your 1-Page Executive Memo, Meeting Slides, Bento Infographics, Regional News, and Neural Voice AI. ... You can also click any citation badge to verify the exact source proof on the original PDF!',
     steps: [
       {
         stepNumber: 1,
         title: 'Step 1: Select or Upload PDF Document',
         actionText: 'Click one of the 3 advisory preset cards, or drag-and-drop your custom PDF into the upload zone.',
-        details: 'Supports complex technical advisories and multi-page reports.',
+        details: 'Supports complex technical advisories, tables, and 50+ page reports.',
         uiTarget: 'Document Ingestion Zone'
       },
       {
         stepNumber: 2,
         title: 'Step 2: Choose Target Audience Persona',
         actionText: 'Click "Executive", "Technical", or "Public" in the top navigation bar.',
-        details: 'Dynamically shifts language complexity, executive tone, and metrics without re-uploading.',
+        details: 'Dynamically shifts language complexity and executive tone instantly.',
         uiTarget: 'Audience Persona Selector'
       },
       {
         stepNumber: 3,
         title: 'Step 3: Click "Transform Document Now"',
         actionText: 'Click the primary red button to execute the single-pass neural pipeline.',
-        details: 'Watch real-time OCR, entity grounding, and multi-format generation finish in <10 seconds.',
-        uiTarget: 'Primary Action CTA & Pipeline Visualizer'
+        details: 'Real-time OCR, entity grounding, and 5-format generation finish in <10 seconds.',
+        uiTarget: 'Primary Action CTA & Visualizer'
       },
       {
         stepNumber: 4,
@@ -80,21 +74,15 @@ export const MULTILINGUAL_VOICE_GUIDES: Record<string, LanguageVoiceGuide> = {
     name: 'Hindi',
     nativeName: 'हिन्दी',
     flag: '🇮🇳',
-    title: 'वेबपेज का उपयोग कैसे करें',
-    subtitle: 'दस्तावेज़ रूपांतरण और 5 आउटपुट प्रारूपों का उपयोग करने के चरणबद्ध निर्देश।',
-    fullScript: 'ओमनीट्रांसफॉर्म एआई का उपयोग करने की चरणबद्ध विधि इस प्रकार है: पहला चरण: दस्तावेज़ अनुभाग में जाएं और दिए गए परामर्श दस्तावेज़ों में से किसी एक पर क्लिक करें, या अपनी खुद की पीडीएफ फाइल अपलोड करें। दूसरा चरण: शीर्ष नेविगेशन बार में अपना दर्शक वर्ग चुनें: कार्यकारी, तकनीकी या नागरिक। तीसरा चरण: लाल रंग के "Transform Document Now" बटन पर क्लिक करें और 10 सेकंड में संपूर्ण रूपांतरण पूरा होते देखें। चौथा चरण: नीचे दिए गए 5 टैब देखें: टैब 1 कार्यकारी मेमो, टैब 2 प्रेजेंटेशन स्लाइड्स, टैब 3 इन्फोग्राफिक्स, टैब 4 क्षेत्रीय समाचार, और टैब 5 ऑडियो पॉडकास्ट। पांचवां चरण: किसी भी साइटेशन बैज जैसे [p.3:12] पर क्लिक करके मूल पीडीएफ संदर्भ सत्यापित करें। छठा चरण: इलेवनलैब्स वॉयस स्टूडियो में लाइव आवाज बनाएं।',
-    stepAudioScripts: [
-      'चरण 1: दस्तावेज़ अनुभाग में जाकर किसी एक दस्तावेज़ का चयन करें या अपनी पीडीएफ फाइल अपलोड करें।',
-      'चरण 2: शीर्ष नेविगेशन बार से अपने दर्शक का प्रकार चुनें: कार्यकारी, तकनीकी या नागरिक।',
-      'चरण 3: लाल रंग के Transform Document Now बटन पर क्लिक करके 10 सेकंड में रूपांतरण प्रारंभ करें।',
-      'चरण 4: नीचे दिए गए 5 टैब में मेमो, स्लाइड्स, इन्फोग्राफिक्स, क्षेत्रीय भाषा और ऑडियो देखें।',
-      'चरण 5: साइटेशन लिंक पर क्लिक करके मूल पीडीएफ संदर्भ जांचें और इलेवनलैब्स ऑडियो स्टूडियो का परीक्षण करें।'
-    ],
+    personaName: 'रोहित · प्राकृतिक हिन्दी स्वर',
+    title: 'वेबसाइट उपयोग करने की सरल विधि',
+    subtitle: 'दस्तावेज़ रूपांतरण और 5 आउटपुट प्रारूपों का उपयोग करने के स्पष्ट निर्देश।',
+    fullScript: 'नमस्ते! आइए समझते हैं कि ओमनीट्रांसफॉर्म एआई का उपयोग कैसे करें। ... सबसे पहले, दस्तावेज़ अनुभाग में जाएं... और दिए गए तकनीकी दस्तावेज़ों में से किसी एक पर क्लिक करें, या अपनी खुद की पीडीएफ फाइल अपलोड करें। ... इसके बाद, शीर्ष नेविगेशन बार में अपना दर्शक वर्ग चुनें: जैसे कि "कार्यकारी", "तकनीकी", या "नागरिक"। ... अब, लाल रंग के "Transform Document Now" बटन पर क्लिक करें। ... केवल 10 सेकंड में हमारा एआई इंजन संपूर्ण विश्लेषण तैयार कर देगा। ... इसके बाद नीचे दिए गए 5 टैब देखें: पहला कार्यकारी मेमो, दूसरा प्रेजेंटेशन स्लाइड्स, तीसरा इन्फोग्राफिक्स, चौथा क्षेत्रीय समाचार, और पांचवां ऑडियो पॉडकास्ट। ... आप किसी भी संदर्भ बैज पर क्लिक करके मूल पीडीएफ की जांच भी कर सकते हैं!',
     steps: [
       {
         stepNumber: 1,
         title: 'चरण 1: दस्तावेज़ चुनें या पीडीएफ अपलोड करें',
-        actionText: 'दिए गए 3 तकनीकी दस्तावेज़ों में से एक पर क्लिक करें या अपनी पीडीएफ फाइल ड्रैग-एंड-ड्रॉप करें।',
+        actionText: 'दिए गए 3 तकनीकी दस्तावेज़ों में से एक पर क्लिक करें या अपनी पीडीएफ फाइल ड्रैग करें।',
         details: 'एनटीआरओ और सरकारी तकनीकी दस्तावेज़ों का संपूर्ण समर्थन।',
         uiTarget: 'दस्तावेज़ चयन अनुभाग'
       },
@@ -134,16 +122,10 @@ export const MULTILINGUAL_VOICE_GUIDES: Record<string, LanguageVoiceGuide> = {
     name: 'Kannada',
     nativeName: 'ಕನ್ನಡ',
     flag: '🇮🇳',
-    title: 'ವೆಬ್‌ಪುಟವನ್ನು ಬಳಸುವ ವಿಧಾನ',
-    subtitle: 'ದಾಖಲೆಗಳನ್ನು ಪರಿವರ್ತಿಸಲು ಮತ್ತು 5 ರೂಪಗಳನ್ನು ಬಳಸಲು ಹಂತ-ಹಂತದ ಸೂಚನೆಗಳು.',
-    fullScript: 'ಓಮ್ನಿಟ್ರಾನ್ಸ್‌ಫಾರ್ಮ್ AI ಬಳಸುವ ಹಂತಗಳು ಹೀಗಿವೆ: ಹಂತ 1: ಡಾಕ್ಯುಮೆಂಟ್ ವಿಭಾಗದಲ್ಲಿ ನೀಡಿರುವ ಮಾದರಿ ವರದಿಗಳಲ್ಲಿ ಒಂದನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ ಅಥವಾ ನಿಮ್ಮ PDF ಫೈಲ್ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ. ಹಂತ 2: ಮೇಲ್ಭಾಗದ ಮೆನುವಿನಲ್ಲಿ ನಿಮ್ಮ ಪ್ರೇಕ್ಷಕರನ್ನು ಆಯ್ಕೆಮಾಡಿ: ಕಾರ್ಯನಿರ್ವಾಹಕ, ತಾಂತ್ರಿಕ ಅಥವಾ ಸಾರ್ವಜನಿಕ. ಹಂತ 3: ಕೆಂಪು "Transform Document Now" ಬಟನ್ ಕ್ಲಿಕ್ ಮಾಡಿ, ಕೇವಲ 10 ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಪ್ರಕ್ರಿಯೆ ಪೂರ್ಣಗೊಳ್ಳುತ್ತದೆ. ಹಂತ 4: ಕೆಳಗಿನ 5 ಟ್ಯಾಬ್‌ಗಳನ್ನು ತೆರೆಯಿರಿ: 1-ಪುಟದ ಮೆಮೊ, ಪ್ರೆಸೆಂಟೇಶನ್ ಸ್ಲೈಡ್‌ಗಳು, ಇನ್‌ಫೋಗ್ರಾಫಿಕ್ಸ್, ಕನ್ನಡ ಸುದ್ದಿ ವರದಿ ಮತ್ತು ಆಡಿಯೋ ಪಾಡ್‌ಕ್ಯಾಸ್ಟ್. ಹಂತ 5: ಯಾವುದೇ ಉಲ್ಲೇಖ ಬ್ಯಾಡ್ಜ್ [p.3:12] ಕ್ಲಿಕ್ ಮಾಡಿ ಮೂಲ ಪುಟದ ಸಾಲುಗಳನ್ನು ಪರಿಶೀಲಿಸಿ. ಹಂತ 6: ElevenLabs ಸ್ಟುಡಿಯೋ ಬಳಸಿ ಲೈವ್ ಧ್ವನಿ ಉತ್ಪಾದಿಸಿ.',
-    stepAudioScripts: [
-      'ಹಂತ 1: ಡಾಕ್ಯುಮೆಂಟ್ ವಿಭಾಗದಲ್ಲಿ ಒಂದು ಮಾದರಿ ವರದಿಯನ್ನು ಆರಿಸಿ ಅಥವಾ ನಿಮ್ಮ PDF ಅಪ್‌ಲೋಡ್ ಮಾಡಿ.',
-      'ಹಂತ 2: ಮೇಲ್ಭಾಗದ ಮೆನುವಿನಲ್ಲಿ ಕಾರ್ಯನಿರ್ವಾಹಕ, ತಾಂತ್ರಿಕ ಅಥವಾ ಸಾರ್ವಜನಿಕ ಪ್ರೇಕ್ಷಕರನ್ನು ಆಯ್ಕೆಮಾಡಿ.',
-      'ಹಂತ 3: ಕೆಂಪು Transform Document Now ಬಟನ್ ಒತ್ತಿ 10 ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಫಲಿತಾಂಶ ಪಡೆಯಿರಿ.',
-      'ಹಂತ 4: ಡ್ಯಾಶ್‌ಬೋರ್ಡ್‌ನಲ್ಲಿರುವ ಮೆಮೊ, ಸ್ಲೈಡ್‌ಗಳು, ಇನ್‌ಫೋಗ್ರಾಫಿಕ್ಸ್ ಮತ್ತು ಆಡಿಯೋ ಟ್ಯಾಬ್‌ಗಳನ್ನು ವೀಕ್ಷಿಸಿ.',
-      'ಹಂತ 5: ಮೂಲ ಉಲ್ಲೇಖಗಳನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತು ElevenLabs ಧ್ವನಿ ಸ್ಟುಡಿಯೋ ಬಳಸಿ.'
-    ],
+    personaName: 'ಅನನ್ಯ · ನೈಸರ್ಗಿಕ ಕನ್ನಡ ಧ್ವನಿ',
+    title: 'ವೆಬ್‌ಸೈಟ್ ಬಳಸುವ ಸುಲಭ ವಿಧಾನ',
+    subtitle: 'ದಾಖಲೆಗಳನ್ನು ಪರಿವರ್ತಿಸಲು ಹಂತ-ಹಂತದ ಮಾನವೀಯ ಧ್ವನಿ ವಿವರಣೆ.',
+    fullScript: 'ನಮಸ್ಕಾರ! ಓಮ್ನಿಟ್ರಾನ್ಸ್‌ಫಾರ್ಮ್ AI ಅನ್ನು ಸುಲಭವಾಗಿ ಬಳಸುವುದು ಹೇಗೆ ಎಂದು ನೋಡೋಣ. ... ಮೊದಲನೆಯದಾಗಿ, ಡಾಕ್ಯುಮೆಂಟ್ ವಿಭಾಗಕ್ಕೆ ಹೋಗಿ... ಅಲ್ಲಿರುವ ಮಾದರಿ ವರದಿಗಳಲ್ಲಿ ಒಂದನ್ನು ಆಯ್ಕೆಮಾಡಿ, ಅಥವಾ ನಿಮ್ಮ ಸ್ವಂತ PDF ಫೈಲ್ ಅನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ. ... ನಂತರ, ಮೇಲ್ಭಾಗದ ಮೆನುವಿನಲ್ಲಿ ನಿಮ್ಮ ಪ್ರೇಕ್ಷಕರನ್ನು ಆಯ್ಕೆಮಾಡಿ: "ಕಾರ್ಯನಿರ್ವಾಹಕ", "ತಾಂತ್ರಿಕ", ಅಥವಾ "ಸಾರ್ವಜನಿಕ". ... ಈಗ, ಕೆಂಪು ಬಣ್ಣದ "Transform Document Now" ಬಟನ್ ಮೇಲೆ ಕ್ಲಿಕ್ ಮಾಡಿ. ... ಕೇವಲ 10 ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಎಲ್ಲಾ 5 ಮಾಧ್ಯಮಗಳು ಸಿದ್ಧವಾಗುತ್ತವೆ. ... ಕೊನೆಯದಾಗಿ, ಕೆಳಗಿರುವ 5 ಟ್ಯಾಬ್‌ಗಳನ್ನು ತೆರೆದು: 1-ಪುಟದ ಮೆಮೊ, ಪ್ರೆಸೆಂಟೇಶನ್ ಸ್ಲೈಡ್‌ಗಳು, ಇನ್‌ಫೋಗ್ರಾಫಿಕ್ಸ್ ಮತ್ತು ಆಡಿಯೋ ಪಾಡ್‌ಕ್ಯಾಸ್ಟ್ ಅನ್ನು ಪರಿಶೀಲಿಸಿ!',
     steps: [
       {
         stepNumber: 1,
@@ -188,16 +170,10 @@ export const MULTILINGUAL_VOICE_GUIDES: Record<string, LanguageVoiceGuide> = {
     name: 'Tamil',
     nativeName: 'தமிழ்',
     flag: '🇮🇳',
-    title: 'வலைப்பக்கத்தை பயன்படுத்தும் முறை',
-    subtitle: 'ஆவணங்களை மாற்றுவதற்கும் 5 வடிவங்களை பயன்படுத்துவதற்கும் படிப்படியான வழிமுறைகள்.',
-    fullScript: 'ஓம்னிட்ரான்ஸ்ஃபார்ம் AI-ஐ எவ்வாறு பயன்படுத்துவது என்பது இதோ: படி 1: ஆவண பகுதிக்குச் சென்று மாதிரி ஆவணங்களில் ஒன்றை கிளிக் செய்யவும் அல்லது உங்கள் PDF கோப்பை பதிவேற்றவும். படி 2: மேல் பட்டியில் பார்வையாளர் வகையை தேர்ந்தெடுக்கவும்: நிர்வாகி, தொழில்நுட்பம் அல்லது பொதுமக்கள். படி 3: சிவப்பு நிற "Transform Document Now" பொத்தானை கிளிக் செய்து 10 வினாடிகளில் முடிவுகளைப் பெறுங்கள். படி 4: கீழே உள்ள 5 தாவல்களை ஆராயுங்கள்: நிர்வாக குறிப்பு, விளக்கக்காட்சி ஸ்லைடுகள், இன்போகிராபிக்ஸ், தமிழ் செய்தி மற்றும் ஆடியோ போட்காஸ்ட். படி 5: மூல PDF ஆதாரங்களை சரிபார்க்க மேற்கோள் குறியீடுகளை கிளிக் செய்யவும். படி 6: ElevenLabs குரல் ஸ்டுடியோவில் புதிய ஆடியோவை உருவாக்கவும்.',
-    stepAudioScripts: [
-      'படி 1: மாதிரி ஆவணங்களில் ஒன்றை தேர்ந்தெடுக்கவும் அல்லது உங்கள் PDF கோப்பை பதிவேற்றவும்.',
-      'படி 2: மேல் பட்டியில் நிர்வாகி, தொழில்நுட்பம் அல்லது பொது பார்வையாளர் வகையை தேர்ந்தெடுக்கவும்.',
-      'படி 3: சிவப்பு Transform Document Now பொத்தானை கிளிக் செய்து 10 வினாடிகளில் மாற்றத்தை தொடங்குங்கள்.',
-      'படி 4: கீழே உள்ள 5 தாவல்களில் மெமோ, ஸ்லைடுகள், வரைபடங்கள் மற்றும் ஆடியோவை ஆராயுங்கள்.',
-      'படி 5: மேற்கோள் இணைப்புகளை கிளிக் செய்து ஆதாரங்களை சரிபார்க்கவும், ElevenLabs குரல் ஸ்டுடியோவை பயன்படுத்தவும்.'
-    ],
+    personaName: 'அருண் · இயல்பான தமிழ் குரல்',
+    title: 'வலைத்தளத்தை பயன்படுத்தும் முறை',
+    subtitle: 'ஆவணங்களை நொடிகளில் மாற்றுவதற்கான எளிய குரல் வழிகாட்டல்.',
+    fullScript: 'வணக்கம்! ஓம்னிட்ரான்ஸ்ஃபார்ம் AI தளத்தை எவ்வாறு பயன்படுத்துவது என்று பார்ப்போம். ... முதலில், ஆவண பகுதிக்குச் சென்று... மாதிரி அறிக்கைகளில் ஒன்றை கிளிக் செய்யவும், அல்லது உங்கள் சொந்த PDF கோப்பை பதிவேற்றவும். ... பின்னர், மேல் பட்டியில் உங்கள் பார்வையாளர் வகையை தேர்ந்தெடுக்கவும்: "நிர்வாகி", "தொழில்நுட்பம்", அல்லது "பொதுமக்கள்". ... இப்போது, சிவப்பு நிற "Transform Document Now" பொத்தானை கிளிக் செய்யுங்கள். ... வெறும் 10 வினாடிகளில் உங்கள் ஆவணம் ஐந்து வடிவங்களாக மாறும். ... இறுதியாக, கீழே உள்ள 5 தாவல்களை திறந்து: நிர்வாக குறிப்பு, விளக்கக்காட்சி ஸ்லைடுகள், வரைபடங்கள் மற்றும் குரல் பதிவை ஆராயுங்கள்!',
     steps: [
       {
         stepNumber: 1,
@@ -242,21 +218,15 @@ export const MULTILINGUAL_VOICE_GUIDES: Record<string, LanguageVoiceGuide> = {
     name: 'Telugu',
     nativeName: 'తెలుగు',
     flag: '🇮🇳',
-    title: 'వెబ్‌పేజీని ఉపయోగించే విధానం',
-    subtitle: 'పత్రాలను మార్చడానికి మరియు 5 ఫార్మాట్‌లను ఉపయోగించడానికి దశలవారీ సూచనలు.',
-    fullScript: 'ఓమ్నిట్రాన్స్‌ఫార్మ్ AI ని ఉపయోగించే విధానం: దశ 1: డాక్యుమెంట్ విభాగంలో ఒక నమూనా పత్రాన్ని ఎంచుకోండి లేదా మీ PDFని అప్‌లోడ్ చేయండి. దశ 2: పై నావిగేషన్ బార్‌లో ఎగ్జిక్యూటివ్, టెక్నికల్ లేదా పబ్లిక్ వర్గాన్ని ఎంచుకోండి. దశ 3: ఎరుపు రంగు "Transform Document Now" బటన్‌పై క్లిక్ చేయండి. దశ 4: క్రింది 5 ట్యాబ్‌లను చూడండి: మెమో, స్లైడ్‌లు, ఇన్ఫోగ్రాఫిక్స్, వార్తలు మరియు వాయిస్ పాడ్‌కాస్ట్. దశ 5: మూల ఆధారాలను ధృవీకరించడానికి సైటేషన్ లింక్‌లను క్లిక్ చేయండి.',
-    stepAudioScripts: [
-      'దశ 1: ఒక నమూనా పత్రాన్ని ఎంచుకోండి లేదా మీ స్వంత PDFని అప్‌లోడ్ చేయండి.',
-      'దశ 2: పై బార్‌లో ఎగ్జిక్యూటివ్, టెక్నికల్ లేదా పబ్లిక్ ఆడియన్స్‌ను ఎంచుకోండి.',
-      'దశ 3: ఎరుపు Transform Document Now బటన్‌పై క్లిక్ చేసి 10 సెకన్లలో ఫలితాలు పొందండి.',
-      'దశ 4: మెమో, స్లైడ్‌లు, ఇన్ఫోగ్రాఫిక్స్ మరియు ఆడియో ట్యాబ్‌లను పరిశీలించండి.',
-      'దశ 5: మూల ఆధారాలను తనిఖీ చేయండి మరియు ElevenLabs వాయిస్ టెస్ట్ చేయండి.'
-    ],
+    personaName: 'కృష్ణ · సహజ తెలుగు స్వరం',
+    title: 'వెబ్‌సైట్ వాడే విధానం',
+    subtitle: 'పత్రాలను సులభంగా మార్చేందుకు స్పష్టమైన సూచనలు.',
+    fullScript: 'నమస్కారం! ఓమ్నిట్రాన్స్‌ఫార్మ్ AI ని ఎలా ఉపయోగించాలో సులభంగా చూద్దాం. ... మొదటగా, డాక్యుమెంట్ విభాగానికి వెళ్లి... నమూనా నివేదికలలో ఒకదాన్ని ఎంచుకోండి, లేదా మీ స్వంత PDFని అప్‌లోడ్ చేయండి. ... తర్వాత, పై నావిగేషన్ బార్‌లో మీ కేటగిరీని ఎంచుకోండి: "ఎగ్జిక్యూటివ్", "టెక్నికల్", లేదా "పబ్లిక్". ... ఇప్పుడు, ఎరుపు రంగు "Transform Document Now" బటన్‌పై క్లిక్ చేయండి. ... కేవలం 10 సెకన్లలో ఐదు ఫార్మాట్‌లు సిద్ధమవుతాయి. ... చివరగా, క్రింది 5 ట్యాబ్‌లను చూసి: మెమో, స్లైడ్‌లు, ఇన్ఫోగ్రాఫిక్స్ మరియు వాయిస్ పాడ్‌కాస్ట్‌ను పరిశీలించండి!',
     steps: [
       {
         stepNumber: 1,
         title: 'దశ 1: పత్రాన్ని ఎంచుకోండి లేదా PDF అప్‌లోడ్ చేయండి',
-        actionText: 'నమూనా డాక్యుమెంట్‌పై క్లిక్ చేయండి లేదా మీ PDFని డ్రాగ్ చేయండి.',
+        actionText: 'నమూనా డాక్యుమెంట్‌పై క్లిಕ್ చేయండి లేదా మీ PDFని డ్రాగ్ చేయండి.',
         details: 'సాంకేతిక పత్రాలకు పూర్తి మద్దతు.',
         uiTarget: 'డాక్యుమెంట్ విభాగం'
       },
@@ -277,9 +247,9 @@ export const MULTILINGUAL_VOICE_GUIDES: Record<string, LanguageVoiceGuide> = {
       {
         stepNumber: 4,
         title: 'దశ 4: 5 ఫార్మాట్‌లను చూడండి',
-        actionText: 'ట్యాబ్ 1 నుండి 5 వరకు క్లిక్ చేసి ఫలితాలు చూడండి.',
+        actionText: 'ట్యాబ్ 1 నుండి 5 వరకు క్లిಕ್ చేసి ఫలితాలు చూడండి.',
         details: 'సమకాలీకరించబడిన అవుట్‌పుట్.',
-        uiTarget: 'అవుట్‌పుట్ డ్యాష్‌బోర్డ్'
+        uiTarget: 'అవుట్‌పుట్ డ్యాష్‌బోర్ڈ'
       },
       {
         stepNumber: 5,
@@ -296,16 +266,10 @@ export const MULTILINGUAL_VOICE_GUIDES: Record<string, LanguageVoiceGuide> = {
     name: 'Bengali',
     nativeName: 'বাংলা',
     flag: '🇮🇳',
-    title: 'ওয়েবপেজ ব্যবহারের নির্দেশিকা',
-    subtitle: 'ডকুমেন্ট রূপান্তর এবং ৫টি ফরম্যাট ব্যবহারের ধাপে ধাপে নির্দেশনা।',
-    fullScript: 'অমনিট্রান্সফর্ম এআই ব্যবহারের নিয়মাবলী: ধাপ ১: ডকুমেন্ট সেকশনে গিয়ে যেকোনো একটি নমুনা ডকুমেন্ট নির্বাচন করুন বা আপনার নিজস্ব পিডিএফ ফাইল আপলোড করুন। ধাপ ২: ওপরের নেভিগেশন বার থেকে অডিয়েন্স নির্বাচন করুন: এক্সিকিউটিভ, টেকনিক্যাল অথবা পাবলিক। ধাপ ৩: লাল "Transform Document Now" বাটনে ক্লিক করুন এবং ১০ সেকেন্ডে রূপান্তর সম্পন্ন হতে দেখুন। ধাপ ৪: নিচের ৫টি ট্যাব দেখুন: ১-পৃষ্ঠার মেমো, স্লাইডস, ইনফোগ্রাফিক্স, এবং অডিও পডকাস্ট। ধাপ ৫: যেকোনো সাইটেশন ব্যাজে ক্লিক করে মূল পিডিএফ তথ্য যাচাই করুন।',
-    stepAudioScripts: [
-      'ধাপ ১: একটি নমুনা ডকুমেন্ট নির্বাচন করুন অথবা আপনার নিজস্ব পিডিএফ ফাইল আপলোড করুন।',
-      'ধাপ ২: ওপরের বার থেকে এক্সিকিউটিভ, টেকনিক্যাল অথবা পাবলিক মোড নির্বাচন করুন।',
-      'ধাপ ৩: লাল Transform Document Now বাটনে ক্লিক করে ১০ সেকেন্ডে রূপান্তর শুরু করুন।',
-      'ধাপ ৪: মেমো, স্লাইড, ইনফোগ্রাফিক্স এবং অডিও পডকাস্ট ট্যাবগুলো অন্বেষণ করুন।',
-      'ধাপ ৫: সাইটেশন লিঙ্কে ক্লিক করে তথ্য যাচাই করুন এবং ElevenLabs ভয়েস পরীক্ষা করুন।'
-    ],
+    personaName: 'পূজা · স্বাভাবিক বাংলা কণ্ঠস্বর',
+    title: 'সহজ ব্যবহার নির্দেশিকা',
+    subtitle: 'নথি রূপান্তর এবং ৫টি আউটপুট ব্যবহারের জন্য স্পষ্ট গাইড।',
+    fullScript: 'নমস্কার! চলুন জেনে নেওয়া যাক অমনিট্রান্সফর্ম এআই ব্যবহারের সহজ উপায়। ... প্রথমে, ডকুমেন্ট সেকশনে গিয়ে একটি নমুনা রিপোর্ট নির্বাচন করুন... অথবা আপনার নিজস্ব পিডিএফ ফাইল আপলোড করুন। ... তারপর, ওপরের বারে আপনার অডিয়েন্স বেছে নিন: "এক্সিকিউটিভ", "টেকনিক্যাল", অথবা "পাবলিক"। ... এবার, লাল "Transform Document Now" বাটনে ক্লিক করুন। ... মাত্র ১০ সেকেন্ডের মধ্যে আমাদের এআই ইঞ্জিন ৫টি ফরম্যাট প্রস্তুত করে দেবে। ... শেষে, নিচের ৫টি ট্যাব থেকে আপনার মেমো, স্লাইডস, ইনফোগ্রাফিক্স এবং অডিও শুনে নিন!',
     steps: [
       {
         stepNumber: 1,
@@ -350,16 +314,10 @@ export const MULTILINGUAL_VOICE_GUIDES: Record<string, LanguageVoiceGuide> = {
     name: 'Marathi',
     nativeName: 'मराठी',
     flag: '🇮🇳',
-    title: 'वेबपेज वापरण्याच्या पायऱ्या',
-    subtitle: 'दस्तऐवज रूपांतरित करण्यासाठी आणि ५ फॉरमॅट्स वापरण्यासाठी टप्प्याटप्प्याने सूचना.',
-    fullScript: 'ओम्नीट्रान्सफॉर्म AI वापरण्याची पद्धत अशी आहे: पायरी १: दस्तऐवज विभागात जाऊन उपलब्ध अहवालांपैकी एक निवडा किंवा तुमची स्वतःची PDF फाईल अपलोड करा. पायरी २: वरच्या नेव्हिगेशन बारमधून तुमचा प्रेक्षक वर्ग निवडा: एक्झिक्युटिव्ह, टेक्निकल किंवा सामान्य नागरिक. पायरी ३: लाल "Transform Document Now" बटनावर क्लिक करा आणि १० सेकंदात निकाल मिळवा. पायरी ४: खालील ५ टॅब तपासा: मेमो, स्लाईड्स, इन्फोग्राफिक्स आणि ऑडिओ पॉडकास्ट. पायरी ५: मूळ संदर्भांची पडताळणी करण्यासाठी सायटेशन बॅजवर क्लिक करा.',
-    stepAudioScripts: [
-      'पायरी १: एक नमुना दस्तऐवज निवडा किंवा तुमची स्वतःची PDF फाईल अपलोड करा.',
-      'पायरी २: वरच्या पट्टीवरून एक्झिक्युटिव्ह, टेक्निकल किंवा पब्लिक पर्याय निवडा.',
-      'पायरी ३: लाल Transform Document Now बटनावर क्लिक करून रूपांतरण सुरू करा.',
-      'पायरी ४: मेमो, प्रेझेंटेशन स्लाईड्स, इन्फोग्राफिक्स आणि ऑडिओ टॅब पहा.',
-      'पायरी ५: संदर्भ तपासण्यासाठी सायटेशनवर क्लिक करा आणि ElevenLabs व्हॉइस वापरा.'
-    ],
+    personaName: 'कबीर · अस्खलित मराठी आवाज',
+    title: 'वेबसाइट वापरण्याची सोपी पद्धत',
+    subtitle: 'दस्तऐवज रूपांतरित करण्यासाठी आणि ५ स्वरूपे वापरण्यासाठी स्पष्ट मार्गदर्शन.',
+    fullScript: 'नमस्कार! ओम्नीट्रान्सफॉर्म AI चा वापर कसा करावा हे समजून घेऊया. ... सर्वात आधी, दस्तऐवज विभागात जाऊन उपलब्ध अहवालांपैकी एक निवडा... किंवा तुमची स्वतःची PDF फाईल अपलोड करा. ... त्यानंतर, वरच्या पट्टीवरून तुमचा प्रेक्षक वर्ग निवडा: "एक्झिक्युटिव्ह", "टेक्निकल", किंवा "नागरिक". ... आता, लाल रंगाच्या "Transform Document Now" बटनावर क्लिक करा. ... अवघ्या १० सेकंदात सर्व ५ फॉरमॅट्स तयार होतील. ... शेवटी, खालील ५ टॅब तपासून मेमो, स्लाईड्स, इन्फोग्राफिक्स आणि ऑडिओ पॉडकास्टचा आनंद घ्या!',
     steps: [
       {
         stepNumber: 1,
@@ -404,16 +362,10 @@ export const MULTILINGUAL_VOICE_GUIDES: Record<string, LanguageVoiceGuide> = {
     name: 'Gujarati',
     nativeName: 'ગુજરાતી',
     flag: '🇮🇳',
-    title: 'વેબપેજનો ઉપયોગ કરવાની રીત',
-    subtitle: 'દસ્તાવેજ રૂપાંતરણ અને 5 આઉટપુટ ફોર્મેટનો ઉપયોગ કરવા માટેની માર્ગદર્શિકા.',
-    fullScript: 'ઓમ્નીટ્રાન્સફોર્મ AI નો ઉપયોગ કરવાની રીત: પગલું 1: દસ્તાવેજ વિભાગમાં જઈને નમૂના દસ્તાવેજ પર ક્લિક કરો અથવા તમારી PDF અપલોડ કરો. પગલું 2: ટોચના બારમાંથી શ્રોતા પ્રકાર પસંદ કરો: એક્ઝિક્યુટિવ, ટેકનિકલ અથવા પબ્લિક. પગલું 3: લાલ "Transform Document Now" બટન પર ક્લિક કરો અને 10 સેકન્ડમાં રૂપાંતરણ પૂર્ણ થવા દો. પગલું 4: નીચેના 5 ટેબ તપાસો: મેમો, સ્લાઇડ્સ, ઇન્ફોગ્રાફિક્સ અને પોડકાસ્ટ. પગલું 5: સાયટેશન બેજ પર ક્લિક કરીને મૂળ PDF ના સંદર્ભો તપાસો.',
-    stepAudioScripts: [
-      'પગલું 1: નમૂના દસ્તાવેજ પસંદ કરો અથવા તમારી પોતાની PDF ફાઇલ અપલોડ કરો.',
-      'પગલું 2: ટોચના બારમાંથી એક્ઝિક્યુટિવ, ટેકનિકલ અથવા પબ્લિક પસંદ કરો.',
-      'પગલું 3: લાલ Transform Document Now બટન પર ક્લિક કરીને રૂપાંતરણ શરૂ કરો.',
-      'પગલું 4: મેમો, સ્લાઇડ્સ, ઇન્ફોગ્રાફિક્સ અને ઓડિયો ટેબ તપાસો.',
-      'પગલું 5: સંદર્ભો તપાસવા માટે સાયટેશન પર ક્લિક કરો અને ElevenLabs વોઇસ વાપરો.'
-    ],
+    personaName: 'દિવ્યા · કુદરતી ગુજરાતી અવાજ',
+    title: 'વેબસાઇટ વાપરવાની સરળ રીત',
+    subtitle: 'દસ્તાવેજોને સરળતાથી રૂપાંતરિત કરવા માટેનું સ્પષ્ટ ઓડિયો માર્ગદર્શન.',
+    fullScript: 'નમસ્તે! ઓમ્નીટ્રાન્સફોર્મ AI નો ઉપયોગ કરવાની સરળ રીત સમજીએ. ... સૌથી પહેલાં, દસ્તાવેજ વિભાગમાં જાઓ... અને આપેલા નમૂના દસ્તાવેજોમાંથી એક પસંદ કરો, અથવા તમારી પોતાની PDF અપલોડ કરો. ... તે પછી, ટોચના બારમાંથી શ્રોતા પ્રકાર પસંદ કરો: "એક્ઝિક્યુટિવ", "ટેકનિકલ", અથવા "પબ્લિક". ... હવે, લાલ રંગના "Transform Document Now" બટન પર ક્લિક કરો. ... માત્ર ૧૦ સેકન્ડમાં તમામ ૫ ફોર્મેટ્સ તૈયાર થઈ જશે. ... છેલ્લે, નીચેના ૫ ટેબ ખોલીને મેમો, સ્લાઇડ્સ, ઇન્ફોગ્રાફિક્સ અને પોડકાસ્ટ મેળવો!',
     steps: [
       {
         stepNumber: 1,
