@@ -85,6 +85,16 @@ export const Footer: React.FC = () => {
                   GitHub (@hrlpavan)
                 </a>
               </li>
+              <li>
+                <a
+                  href="https://hackerone.com/hrlpavandomination"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-[#0071E3] hover:underline"
+                >
+                  HackerOne (@hrlpavandomination)
+                </a>
+              </li>
             </ul>
           </div>
         </div>
